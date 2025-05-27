@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Photo Sheet Generator with Manual Size - A4 Canvas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      background: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      width: 620px; /* viewport friendly size */
+      height: auto;
+    }
+    .controls {
+      margin-bottom: 20px;
+    }
+    input, label, button {
+      margin: 8px;
+      padding: 8px;
+    }
+    #manualSizeInputs {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Passport Size Photo Maker</h2>
+
+  <div class="controls">
+    <label><input type="radio" name="mode" value="single" checked> Single Passport Photo</label>
+    <label><input type="radio" name="mode" value="joint"> Joint Passport Photo</label>
+    <label><input type="radio" name="mode" value="stamp"> Stamp Size Photo</label>
+    <label><input type="radio" name="mode" value="manual"> Manual Size Photo</label><br>
+
+    <div id="singleUpload">
+      <input type="file" id="uploadSingle" accept="image/*" />
+    </div>
+
+    <div id="jointUpload" style="display:none;">
+      <label>Upload Photo 1:</label>
+      <input type="file" id="upload1" accept="image/*" /><br />
+      <label>Upload Photo 2:</label>
+      <input type="file" id="upload2" accept="image/*" />
+    </div>
+
+    <div id="manualSizeInputs" style="display:none;">
+      Width (cm): <input type="number" id="manualWidth" value="3.5" step="0.1" min="0.1" />
+      Height (cm): <input type="number" id="manualHeight" value="4.5" step="0.1" min="0.1" />
+    </div>
+
+    <label>Number of Copies:</label>
+    <input type="number" id="photoCount" value="8" min="1" max="50" /><br />
+
+    <button onclick="download()">Download</button>
+  </div>
+
+  <!-- Canvas set to A4 size at 300dpi -->
+  <canvas id="canvas" width="2474" height="3508"></canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const marginX = 30,
+      marginY = 30,
+      gapX = 20,
+      gapY = 20;
+
+    // DPI: 300dpi = 118.11 pixels/cm
+    const DPI_CM = 118.11;
+
+    const photoSizes = {
+      single: { width: 412, height: 530 }, // 3.5x4.5 cm approx at 300dpi
+      joint: { width: 412 * 2 + 10, height: 530 },
+      stamp: { width: 240, height: 300 } // ~2x2.5 cm approx
+    };
+
+    let mode = "single";
+    let imgSingle = null;
+    let img1 = null,
+      img2 = null;
+
+    const modeRadios = document.querySelectorAll('input[name="mode"]');
+    const singleUploadDiv = document.getElementById("singleUpload");
+    const jointUploadDiv = document.getElementById("jointUpload");
+    const manualSizeDiv = document.getElementById("manualSizeInputs");
+
+    modeRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        mode = e.target.value;
+        // Show/hide upload inputs
+        singleUploadDiv.style.display =
+          mode === "single" || mode === "stamp" || mode === "manual"
+            ? "block"
+            : "none";
+        jointUploadDiv.style.display = mode === "joint" ? "block" : "none";
+        manualSizeDiv.style.display = mode === "manual" ? "block" : "none";
+        drawPhotos();
+      });
+    });
+
+    function drawPhotos() {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const count = parseInt(document.getElementById("photoCount").value);
+
+      let photoW, photoH;
+
+      if (mode === "manual") {
+        // convert cm to px
+        let wcm = parseFloat(document.getElementById("manualWidth").value);
+        let hcm = parseFloat(document.getElementById("manualHeight").value);
+        photoW = wcm * DPI_CM;
+        photoH = hcm * DPI_CM;
+      } else {
+        photoW = photoSizes[mode].width;
+        photoH = photoSizes[mode].height;
+      }
+
+      let perRow = Math.floor((canvas.width - 2 * marginX + gapX) / (photoW + gapX));
+      let perCol = Math.floor((canvas.height - 2 * marginY + gapY) / (photoH + gapY));
+      let maxPhotos = perRow * perCol;
+      let totalPhotos = Math.min(count, maxPhotos);
+
+      for (let i = 0; i < totalPhotos; i++) {
+        let row = Math.floor(i / perRow);
+        let col = i % perRow;
+        let x = marginX + col * (photoW + gapX);
+        let y = marginY + row * (photoH + gapY);
+
+        if ((mode === "single" || mode === "stamp" || mode === "manual") && imgSingle) {
+          ctx.drawImage(imgSingle, x, y, photoW, photoH);
+        } else if (mode === "joint" && img1 && img2) {
+          ctx.drawImage(img1, x, y, 412, 530);
+          ctx.drawImage(img2, x + 412 + 10, y, 412, 530);
+        }
+      }
+    }
+
+    // Image upload handlers
+    document.getElementById("uploadSingle").addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        imgSingle = new Image();
+        imgSingle.onload = drawPhotos;
+        imgSingle.src = evt.target.result;
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    document.getElementById("upload1").addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        img1 = new Image();
+        img1.onload = drawPhotos;
+        img1.src = evt.target.result;
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    document.getElementById("upload2").addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        img2 = new Image();
+        img2.onload = drawPhotos;
+        img2.src = evt.target.result;
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    // Update drawing on count or manual size change
+    document.getElementById("photoCount").addEventListener("input", drawPhotos);
+    document.getElementById("manualWidth").addEventListener("input", drawPhotos);
+    document.getElementById("manualHeight").addEventListener("input", drawPhotos);
+
+  function download() {
+    const link = document.createElement("a");
+    link.download = `${mode}-photo-sheet.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+
+  </script>
+</body>
+</html>

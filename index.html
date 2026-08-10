@@ -15,40 +15,51 @@
         }
         html, body {
             width: 100vw;
-            min-height: 100vh;
+            height: 100vh;
             font-family: 'Courier New', Courier, monospace;
             background-color: #0d0d0d;
             color: #00ff00;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
+        
+        /* Step 1 Page Container (Small & Compact) */
         .container {
             position: relative;
-            width: 95vw;
-            max-width: 500px;
-            min-height: 90vh;
+            width: 92vw;
+            max-width: 400px;
+            height: auto;
             background: #121212;
-            padding: 15px;
+            padding: 12px;
             border-radius: 12px;
             border: 1px solid #00ff00;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Step 2 & Step 3 Full Screen Expanded Mode */
+        .container.expanded {
+            width: 96vw;
+            max-width: 850px;
+            height: 92vh;
+            max-height: 92vh;
         }
         
         /* 3-DOT MENU STYLES */
         .menu-btn {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
+            top: 8px;
+            right: 12px;
+            font-size: 22px;
             cursor: pointer;
             color: #00ff00;
             user-select: none;
-            padding: 0 8px;
+            padding: 0 6px;
             border-radius: 4px;
             z-index: 100;
         }
@@ -57,39 +68,38 @@
         }
         .dropdown-menu {
             position: absolute;
-            top: 40px;
-            right: 15px;
+            top: 35px;
+            right: 12px;
             background: #181818;
             border: 1px solid #00ff00;
             border-radius: 8px;
-            padding: 12px;
-            width: 200px;
+            padding: 10px;
+            width: 180px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.8);
             z-index: 101;
             text-align: left;
         }
         .credit-info {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #00ff00;
         }
         .credit-count {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #ffffff;
-            margin-top: 4px;
+            margin-top: 2px;
             display: block;
         }
 
         h2 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             text-align: center;
-            padding-right: 40px;
+            padding-right: 35px;
             width: 100%;
         }
         .step-section {
             width: 100%;
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -98,16 +108,21 @@
             border-radius: 8px;
             background: #181818;
             padding: 10px;
-            overflow-y: auto;
+            margin-top: 4px;
         }
 
-        /* STYLISH MOBILE-FRIENDLY UPLOAD BOX */
+        .container.expanded .step-section {
+            height: calc(100% - 35px);
+            justify-content: space-between;
+        }
+
+        /* STYLISH MOBILE-FRIENDLY UPLOAD BOX (Step 1 Small) */
         .upload-card {
             width: 100%;
-            max-width: 350px;
-            height: 200px;
+            max-width: 320px;
+            height: 150px;
             border: 2px dashed #00ff00;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -116,63 +131,66 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            padding: 15px;
+            padding: 10px;
         }
         .upload-card:hover {
             background: #1a261a;
             border-color: #33ff33;
         }
         .upload-icon {
-            font-size: 40px;
-            margin-bottom: 8px;
+            font-size: 32px;
+            margin-bottom: 6px;
             color: #00ff00;
         }
         .upload-card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #00ff00;
             font-weight: bold;
         }
         .upload-card span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #888;
-            margin-top: 5px;
+            margin-top: 4px;
         }
         #upload {
             display: none;
         }
 
         input, select {
-            margin: 4px;
-            padding: 6px 10px;
+            margin: 3px;
+            padding: 5px 8px;
             background: #1e1e1e;
             color: #00ff00;
             border: 1px solid #00ff00;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         button {
-            padding: 8px 14px;
+            padding: 6px 12px;
             background: #00ff00;
             color: #0d0d0d;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.85rem;
-            margin: 4px;
+            font-size: 0.8rem;
+            margin: 3px;
             border-radius: 4px;
         }
         button:hover {
             background: #00cc00;
         }
+
+        /* Expanded Image Container for Easy Mobile Cropping */
         .img-container {
             width: 100%;
-            height: 50vh;
-            max-height: 400px;
+            height: 65vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             overflow: hidden;
+            background: #0a0a0a;
+            border-radius: 6px;
         }
         #crop-image {
             max-width: 100%;
@@ -182,26 +200,26 @@
         canvas {
             border: 1px solid #00ff00;
             max-width: 100%;
-            max-height: 40vh;
+            max-height: 55vh;
             width: auto;
             height: auto;
             background-color: #1e1e1e;
-            margin: 8px 0;
+            margin: 6px 0;
             object-fit: contain;
         }
         .hidden {
             display: none !important;
         }
         .color-presets {
-            margin: 4px 0;
+            margin: 3px 0;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 6px;
         }
         .preset-btn {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 1px solid #00ff00;
             cursor: pointer;
@@ -216,22 +234,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 20px 0;
         }
         .spinner {
-            width: 45px;
-            height: 45px;
-            border: 4px solid #1a331a;
-            border-top: 4px solid #00ff00;
+            width: 38px;
+            height: 38px;
+            border: 3px solid #1a331a;
+            border-top: 3px solid #00ff00;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         .loading-text {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #00ff00;
             animation: blink 1.5s infinite;
             text-align: center;
@@ -246,7 +265,7 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 3px;
             width: 100%;
         }
     </style>
@@ -267,7 +286,7 @@
 
     <h2>[ Passport Photo Maker ]</h2>
 
-    <!-- Step 1: Upload Photo (Supports All Formats) -->
+    <!-- Step 1: Upload Photo (Small Box Mode) -->
     <div id="step-1" class="step-section">
         <label for="upload" class="upload-card">
             <div class="upload-icon">📷</div>
@@ -277,13 +296,13 @@
         <input type="file" id="upload" accept="image/*, .png, .jpg, .jpeg, .webp, .heic, .bmp, .gif, .tiff, .svg, .avif">
     </div>
 
-    <!-- Step 2: Crop Photo -->
+    <!-- Step 2: Crop Photo (Full Screen Fit Mode) -->
     <div id="step-2" class="step-section hidden">
         <div class="img-container">
             <img id="crop-image" src="" alt="Crop Area">
         </div>
         <div class="controls-row">
-            <label>Ratio: </label>
+            <label style="font-size: 0.8rem;">Ratio: </label>
             <select id="size-preset">
                 <option value="free" selected>Free Crop</option>
                 <option value="nocrop">No Crop (Direct Process)</option>
@@ -306,7 +325,7 @@
         <canvas id="final-canvas"></canvas>
 
         <div class="controls-row">
-            <label>BG Color: </label>
+            <label style="font-size: 0.8rem;">BG Color: </label>
             <input type="color" id="bg-color" value="#ffffff" onchange="renderFinalPhoto()">
             
             <div class="color-presets">
@@ -316,14 +335,14 @@
                 <button class="preset-btn" style="background:#00ff00;" onclick="setColor('#00ff00')"></button>
             </div>
 
-            <label>Border: </label>
+            <label style="font-size: 0.8rem;">Border: </label>
             <select id="border-option" onchange="renderFinalPhoto()">
                 <option value="none">No Border</option>
                 <option value="thin">Thin Border</option>
                 <option value="thick">Thick Border</option>
             </select>
 
-            <label>Format: </label>
+            <label style="font-size: 0.8rem;">Format: </label>
             <select id="download-format">
                 <option value="image/png">PNG (HD)</option>
                 <option value="image/jpeg">JPEG (HD)</option>
@@ -399,6 +418,9 @@
     });
 
     function openCropperScreen(imageSource) {
+        // Expand Container to Full Screen mode for Cropping
+        document.getElementById('main-container').classList.add('expanded');
+
         cropImgElement.src = imageSource;
         document.getElementById('step-1').classList.add('hidden');
         document.getElementById('step-3').classList.add('hidden');
@@ -410,11 +432,13 @@
 
         sizePreset.value = 'free';
 
-        // Cropper Configuration for Free Panning and Zooming
+        // Cropper Configuration for Full Touch Zoom / Move / Drag
         cropper = new Cropper(cropImgElement, {
             aspectRatio: NaN, // Free Crop by Default
-            viewMode: 0,      // Permits moving the image unrestricted
-            dragMode: 'move', // Allows moving the photo around on touch/drag
+            viewMode: 0,      // Permits moving image unrestricted
+            dragMode: 'move', // Touch drag/move photo smoothly
+            touchDragZoom: true, // Pinch to zoom on Mobile
+            wheelZoom: true,     // Scroll wheel zoom on Desktop
             autoCropArea: 0.8,
             restore: false,
             guides: true,
@@ -565,11 +589,15 @@
         openCropperScreen(bgRemovedUrl);
     }
 
-    // Complete Reset
+    // Complete Reset (Back to Small Step 1 Container)
     function fullReset() {
         rawImageSrc = null;
         bgRemovedBlob = null;
         originalFileBlob = null;
+        
+        // Remove expanded class to revert to small container
+        document.getElementById('main-container').classList.remove('expanded');
+
         document.getElementById('step-2').classList.add('hidden');
         document.getElementById('step-3').classList.add('hidden');
         document.getElementById('step-1').classList.remove('hidden');

@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Remover & Photo Studio HD</title>
-    <!-- Cropper.js for smooth cropping -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Passport & Joint Photo Maker HD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <style>
@@ -15,7 +14,7 @@
         }
         html, body {
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #080c08;
             color: #00ff66;
@@ -25,44 +24,39 @@
             overflow: hidden;
         }
         
-        /* Step 1 Page Container */
         .container {
             position: relative;
-            width: 92vw;
+            width: 94vw;
             max-width: 440px;
-            height: auto;
-            min-height: 320px;
             background: #111811;
-            padding: 20px;
-            border-radius: 16px;
+            padding: 16px;
+            border-radius: 14px;
             border: 2px solid #00ff66;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
-        /* Step 2 & Step 3 Full Screen Expanded Mode */
         .container.expanded {
             width: 98vw;
-            max-width: 960px;
-            height: 96vh;
-            max-height: 96vh;
-            padding: 14px;
+            max-width: 900px;
+            height: 96dvh;
+            max-height: 96dvh;
+            padding: 10px;
             justify-content: space-between;
         }
         
-        /* 3-DOT MENU STYLES */
         .menu-btn {
             position: absolute;
-            top: 12px;
-            right: 15px;
-            font-size: 24px;
+            top: 10px;
+            right: 12px;
+            font-size: 22px;
             cursor: pointer;
             color: #00ff66;
             user-select: none;
-            padding: 0 8px;
+            padding: 0 6px;
             border-radius: 6px;
             z-index: 100;
         }
@@ -71,32 +65,32 @@
         }
         .dropdown-menu {
             position: absolute;
-            top: 45px;
-            right: 15px;
+            top: 40px;
+            right: 12px;
             background: #141c14;
             border: 2px solid #00ff66;
             border-radius: 8px;
-            padding: 12px;
-            width: 190px;
+            padding: 10px;
+            width: 180px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             z-index: 101;
             text-align: left;
         }
         .credit-info {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #00ff66;
         }
         .credit-count {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #ffffff;
-            margin-top: 4px;
+            margin-top: 2px;
             display: block;
         }
 
         h2 {
-            font-size: 1.25rem;
-            margin-bottom: 15px;
+            font-size: 1.15rem;
+            margin-bottom: 10px;
             text-align: center;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -110,112 +104,109 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            flex: 1;
+            min-height: 0;
         }
 
         .container.expanded .step-section {
-            height: calc(100% - 40px);
+            height: calc(100% - 32px);
             justify-content: space-between;
         }
 
-        /* UPLOAD BOX (Center Aligned) */
         .upload-wrapper {
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 12px;
         }
         .upload-card {
             width: 100%;
-            height: 180px;
+            height: 170px;
             border: 2px dashed #00ff66;
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: #0f150f;
             cursor: pointer;
-            transition: all 0.2s ease;
             text-align: center;
-            padding: 15px;
+            padding: 12px;
         }
         .upload-card:hover {
             background: #162216;
             border-color: #33ff88;
         }
         .upload-icon-circle {
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
             background: #152215;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border: 1px solid #00ff66;
         }
         .upload-icon {
-            font-size: 26px;
+            font-size: 24px;
         }
         .upload-card p {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #ffffff;
             font-weight: 600;
         }
         .upload-card span {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #7a917a;
-            margin-top: 6px;
+            margin-top: 4px;
         }
         #upload {
             display: none;
         }
 
         input, select {
-            margin: 4px;
-            padding: 8px 12px;
+            margin: 2px;
+            padding: 6px 8px;
             background: #141c14;
             color: #00ff66;
             border: 1px solid #00ff66;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
             outline: none;
         }
         
         button {
-            padding: 9px 16px;
+            padding: 7px 12px;
             background: #00ff66;
             color: #080c08;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.9rem;
-            margin: 4px;
-            border-radius: 6px;
-            transition: 0.2s ease;
+            font-size: 0.8rem;
+            margin: 2px;
+            border-radius: 5px;
+            transition: 0.15s ease;
         }
         button:hover {
             background: #22ff77;
         }
 
-        /* Smooth Cropper Container */
         .img-container {
             width: 100%;
             flex: 1;
             min-height: 0;
-            max-height: 72vh;
+            max-height: 66dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #040704;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #00ff6644;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             overflow: hidden;
-            touch-action: none;
+            position: relative;
         }
         #crop-image {
             max-width: 100%;
@@ -223,7 +214,6 @@
             display: block;
         }
         
-        /* Canvas Wrapper & Thin Border Canvas */
         .canvas-wrapper {
             width: 100%;
             flex: 1;
@@ -231,13 +221,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         canvas {
             border: 1px solid #00ff66;
             max-width: 100%;
-            max-height: 65vh;
+            max-height: 60dvh;
             width: auto;
             height: auto;
             background-color: #141c14;
@@ -249,15 +239,14 @@
             display: none !important;
         }
         .color-presets {
-            margin: 3px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         .preset-btn {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 1px solid #00ff66;
             cursor: pointer;
@@ -265,7 +254,6 @@
             margin: 0;
         }
         
-        /* Loading Animation */
         #loading {
             margin: auto;
             display: flex;
@@ -276,12 +264,12 @@
         }
         .spinner-container {
             display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
         .dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background-color: #00ff66;
             border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
@@ -296,11 +284,10 @@
         }
 
         .loading-text {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #00ff66;
             letter-spacing: 0.5px;
             text-align: center;
-            font-weight: 500;
         }
 
         .controls-row {
@@ -308,18 +295,17 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 3px;
             width: 100%;
+            padding: 2px 0;
         }
     </style>
 </head>
 <body>
 
 <div class="container" id="main-container">
-    <!-- 3-Dot Menu Icon -->
     <div class="menu-btn" id="menu-icon" onclick="toggleMenu(event)">⋮</div>
 
-    <!-- Dropdown Menu Box -->
     <div id="dropdown-menu" class="dropdown-menu hidden">
         <div class="credit-info">
             Total Credits Left:
@@ -327,9 +313,8 @@
         </div>
     </div>
 
-    <h2>Background Remover</h2>
+    <h2>Passport Photo Maker HD</h2>
 
-    <!-- Step 1: Modern Upload Card -->
     <div id="step-1" class="step-section">
         <div class="upload-wrapper">
             <label for="upload" class="upload-card">
@@ -343,42 +328,39 @@
         </div>
     </div>
 
-    <!-- Step 2: Crop Photo -->
     <div id="step-2" class="step-section hidden">
         <div class="img-container">
-            <img id="crop-image" src="" alt="Crop Area">
+            <img id="crop-image" alt="Crop Area">
         </div>
         <div class="controls-row">
-            <label style="font-size: 0.9rem;">Size / Ratio: </label>
+            <label style="font-size: 0.8rem;">Ratio: </label>
             <select id="size-preset">
-                <option value="3.5/4.5" selected>Standard Passport (3.5 x 4.5 cm)</option>
+                <option value="3.5/4.5" selected>Passport (3.5x4.5)</option>
                 <option value="manual">Manual Crop</option>
-                <option value="joint">Joint Photo (4 x 6 Ratio)</option>
-                <option value="nocrop">No Crop (Direct Process)</option>
+                <option value="joint">Joint Photo (4x6)</option>
+                <option value="nocrop">No Crop</option>
             </select>
-            <button onclick="cropAndRemoveBg()">Process & Remove BG</button>
-            <button onclick="fullReset()" style="background:#ff4444; color:#fff;">Change Photo</button>
+            <button onclick="cropAndRemoveBg()">Remove BG</button>
+            <button onclick="fullReset()" style="background:#ff4444; color:#fff;">Change</button>
         </div>
     </div>
 
-    <!-- Loading Spinner Indicator -->
     <div id="loading" class="step-section hidden">
         <div class="spinner-container">
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
         </div>
-        <div class="loading-text">Processing background removal in HD...</div>
+        <div class="loading-text">Processing in HD...</div>
     </div>
 
-    <!-- Step 3: Final Preview & Customization -->
     <div id="step-3" class="step-section hidden">
         <div class="canvas-wrapper">
             <canvas id="final-canvas"></canvas>
         </div>
 
         <div class="controls-row">
-            <label style="font-size: 0.9rem;">BG Color: </label>
+            <label style="font-size: 0.8rem;">BG: </label>
             <input type="color" id="bg-color" value="#ffffff" onchange="renderFinalPhoto()">
             
             <div class="color-presets">
@@ -389,23 +371,22 @@
                 <button class="preset-btn" style="background:#e0e0e0;" onclick="setColor('#e0e0e0')"></button>
             </div>
 
-            <label style="font-size: 0.9rem;">Border: </label>
+            <label style="font-size: 0.8rem;">Border: </label>
             <select id="border-option" onchange="renderFinalPhoto()">
-                <option value="none">No Border</option>
-                <option value="thin">Thin Border</option>
-                <option value="thick">Thick Border</option>
+                <option value="none">None</option>
+                <option value="thin">Thin</option>
+                <option value="thick">Thick</option>
             </select>
 
-            <label style="font-size: 0.9rem;">Format: </label>
             <select id="download-format">
-                <option value="image/png">PNG (HD)</option>
-                <option value="image/jpeg">JPEG (HD)</option>
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPEG</option>
             </select>
         </div>
 
-        <div class="controls-row" style="margin-top: 6px;">
+        <div class="controls-row" style="margin-top: 4px;">
             <button onclick="downloadImage()">Download HD</button>
-            <button onclick="reCropCurrentPhoto()" style="background:#ffaa00; color:#080c08;">Re-Crop Image</button>
+            <button onclick="reCropCurrentPhoto()" style="background:#ffaa00; color:#080c08;">Re-Crop</button>
         </div>
     </div>
 </div>
@@ -453,7 +434,6 @@
     const cropImgElement = document.getElementById('crop-image');
     const sizePreset = document.getElementById('size-preset');
 
-    // Robust file selection handling
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -469,20 +449,21 @@
 
     function openCropperScreen(imageSource) {
         document.getElementById('main-container').classList.add('expanded');
-
-        cropImgElement.src = imageSource;
         document.getElementById('step-1').classList.add('hidden');
         document.getElementById('step-3').classList.add('hidden');
         document.getElementById('step-2').classList.remove('hidden');
 
         if (cropper) {
             cropper.destroy();
+            cropper = null;
         }
 
         sizePreset.value = '3.5/4.5';
-
+        
         cropImgElement.onload = function() {
-            if (cropper) cropper.destroy();
+            if (cropper) {
+                cropper.destroy();
+            }
             cropper = new Cropper(cropImgElement, {
                 aspectRatio: 3.5 / 4.5,
                 viewMode: 1,
@@ -498,9 +479,14 @@
                 cropBoxMovable: true,
                 cropBoxResizable: true,
                 toggleDragModeOnDblclick: false,
-                background: false
+                background: false,
+                ready: function() {
+                    this.cropper.crop();
+                }
             });
         };
+
+        cropImgElement.src = imageSource;
     }
 
     sizePreset.addEventListener('change', function() {
@@ -575,7 +561,7 @@
             renderFinalPhoto();
         } catch (err) {
             console.error(err);
-            alert("Error removing background! API Keys might be exhausted or network error.");
+            alert("Error removing background! API Keys exhausted or network error.");
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
         }
@@ -632,7 +618,7 @@
 
         const link = document.createElement('a');
         link.href = canvas.toDataURL(format, 1.0);
-        link.download = `passport_photo_hd.${ext}`;
+        link.download = `photo_hd.${ext}`;
         link.click();
     }
 

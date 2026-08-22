@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passport Size Photo Maker</title>
+    <title>Background Remover</title>
     <!-- Cropper.js for smooth cropping -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -16,197 +16,235 @@
         html, body {
             width: 100vw;
             height: 100vh;
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #0d0d0d;
-            color: #00ff00;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #080c08;
+            color: #00ff66;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
         
-        /* Step 1 Page Container (Small & Compact) */
+        /* Step 1 Page Container */
         .container {
             position: relative;
             width: 92vw;
-            max-width: 400px;
+            max-width: 440px;
             height: auto;
-            background: #121212;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #00ff00;
+            min-height: 320px;
+            background: #111811;
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px solid #00ff66;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             transition: all 0.3s ease;
         }
 
         /* Step 2 & Step 3 Full Screen Expanded Mode */
         .container.expanded {
-            width: 96vw;
-            max-width: 850px;
-            height: 92vh;
-            max-height: 92vh;
+            width: 98vw;
+            max-width: 960px;
+            height: 96vh;
+            max-height: 96vh;
+            padding: 14px;
+            justify-content: space-between;
         }
         
         /* 3-DOT MENU STYLES */
         .menu-btn {
             position: absolute;
-            top: 8px;
-            right: 12px;
-            font-size: 22px;
+            top: 12px;
+            right: 15px;
+            font-size: 24px;
             cursor: pointer;
-            color: #00ff00;
+            color: #00ff66;
             user-select: none;
-            padding: 0 6px;
-            border-radius: 4px;
+            padding: 0 8px;
+            border-radius: 6px;
             z-index: 100;
         }
         .menu-btn:hover {
-            background: #1a331a;
+            background: #1a261a;
         }
         .dropdown-menu {
             position: absolute;
-            top: 35px;
-            right: 12px;
-            background: #181818;
-            border: 1px solid #00ff00;
+            top: 45px;
+            right: 15px;
+            background: #141c14;
+            border: 2px solid #00ff66;
             border-radius: 8px;
-            padding: 10px;
-            width: 180px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            padding: 12px;
+            width: 190px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             z-index: 101;
             text-align: left;
         }
         .credit-info {
-            font-size: 0.8rem;
-            color: #00ff00;
+            font-size: 0.85rem;
+            color: #00ff66;
         }
         .credit-count {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             color: #ffffff;
-            margin-top: 2px;
+            margin-top: 4px;
             display: block;
         }
 
         h2 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
+            font-size: 1.25rem;
+            margin-bottom: 15px;
             text-align: center;
-            padding-right: 35px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #00ff66;
             width: 100%;
         }
+
         .step-section {
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 1px dashed #00ff00;
-            border-radius: 8px;
-            background: #181818;
-            padding: 10px;
-            margin-top: 4px;
+            border-radius: 12px;
         }
 
         .container.expanded .step-section {
-            height: calc(100% - 35px);
+            height: calc(100% - 40px);
             justify-content: space-between;
         }
 
-        /* STYLISH MOBILE-FRIENDLY UPLOAD BOX (Step 1 Small) */
-        .upload-card {
+        /* UPLOAD BOX (Center Aligned) */
+        .upload-wrapper {
             width: 100%;
-            max-width: 320px;
-            height: 150px;
-            border: 2px dashed #00ff00;
-            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #111;
+            gap: 12px;
+        }
+        .upload-card {
+            width: 100%;
+            height: 180px;
+            border: 2px dashed #00ff66;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0f150f;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
         }
         .upload-card:hover {
-            background: #1a261a;
-            border-color: #33ff33;
+            background: #162216;
+            border-color: #33ff88;
+        }
+        .upload-icon-circle {
+            width: 55px;
+            height: 55px;
+            background: #152215;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            border: 1px solid #00ff66;
         }
         .upload-icon {
-            font-size: 32px;
-            margin-bottom: 6px;
-            color: #00ff00;
+            font-size: 26px;
         }
         .upload-card p {
-            font-size: 0.85rem;
-            color: #00ff00;
-            font-weight: bold;
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: 600;
         }
         .upload-card span {
-            font-size: 0.65rem;
-            color: #888;
-            margin-top: 4px;
+            font-size: 0.72rem;
+            color: #7a917a;
+            margin-top: 6px;
         }
         #upload {
             display: none;
         }
 
         input, select {
-            margin: 3px;
-            padding: 5px 8px;
-            background: #1e1e1e;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            margin: 4px;
+            padding: 8px 12px;
+            background: #141c14;
+            color: #00ff66;
+            border: 1px solid #00ff66;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
         }
+        
         button {
-            padding: 6px 12px;
-            background: #00ff00;
-            color: #0d0d0d;
+            padding: 9px 16px;
+            background: #00ff66;
+            color: #080c08;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.8rem;
-            margin: 3px;
-            border-radius: 4px;
+            font-size: 0.9rem;
+            margin: 4px;
+            border-radius: 6px;
+            transition: 0.2s ease;
         }
         button:hover {
-            background: #00cc00;
+            background: #22ff77;
         }
 
-        /* Expanded Image Container for Easy Mobile Cropping */
+        /* Smooth Cropper Container */
         .img-container {
             width: 100%;
-            height: 65vh;
+            flex: 1;
+            min-height: 0;
+            max-height: 72vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 6px;
+            background: #040704;
+            border-radius: 8px;
+            border: 1px solid #00ff6644;
+            margin-bottom: 8px;
             overflow: hidden;
-            background: #0a0a0a;
-            border-radius: 6px;
+            touch-action: none;
         }
         #crop-image {
             max-width: 100%;
             max-height: 100%;
             display: block;
         }
+        
+        /* Canvas Wrapper & Thin Border Canvas */
+        .canvas-wrapper {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
         canvas {
-            border: 1px solid #00ff00;
+            border: 1px solid #00ff66; /* Thin Border for Photo View */
             max-width: 100%;
-            max-height: 55vh;
+            max-height: 65vh;
             width: auto;
             height: auto;
-            background-color: #1e1e1e;
-            margin: 6px 0;
+            background-color: #141c14;
             object-fit: contain;
+            border-radius: 4px;
         }
+        
         .hidden {
             display: none !important;
         }
@@ -218,54 +256,59 @@
             gap: 6px;
         }
         .preset-btn {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            border: 1px solid #00ff00;
+            border: 1px solid #00ff66;
             cursor: pointer;
             padding: 0;
             margin: 0;
         }
         
-        /* HACKER GREEN SPINNER NO GLOW */
+        /* Loading Animation */
         #loading {
             margin: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 0;
+            height: 100%;
         }
-        .spinner {
-            width: 38px;
-            height: 38px;
-            border: 3px solid #1a331a;
-            border-top: 3px solid #00ff00;
+        .spinner-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .dot {
+            width: 14px;
+            height: 14px;
+            background-color: #00ff66;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 10px;
+            animation: bounce 1.4s infinite ease-in-out both;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1.0); opacity: 1; }
         }
+
         .loading-text {
-            font-size: 0.8rem;
-            color: #00ff00;
-            animation: blink 1.5s infinite;
+            font-size: 0.95rem;
+            color: #00ff66;
+            letter-spacing: 0.5px;
             text-align: center;
+            font-weight: 500;
         }
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
+
         .controls-row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 6px;
             width: 100%;
         }
     </style>
@@ -280,88 +323,97 @@
     <div id="dropdown-menu" class="dropdown-menu hidden">
         <div class="credit-info">
             Total Credits Left:
-            <span id="credit-display" class="credit-count">100 / 100</span>
+            <span id="credit-display" class="credit-count">78 / 100</span>
         </div>
     </div>
 
-    <h2>[ Passport Photo Maker ]</h2>
+    <h2>Background Remover</h2>
 
-    <!-- Step 1: Upload Photo (Small Box Mode) -->
+    <!-- Step 1: Modern Upload Card -->
     <div id="step-1" class="step-section">
-        <label for="upload" class="upload-card">
-            <div class="upload-icon">📷</div>
-            <p>TAP TO UPLOAD ANY PHOTO</p>
-            <span>Supports PNG, JPG, JPEG, WEBP, HEIC, BMP, All Formats</span>
-        </label>
-        <input type="file" id="upload" accept="image/*, .png, .jpg, .jpeg, .webp, .heic, .bmp, .gif, .tiff, .svg, .avif">
+        <div class="upload-wrapper">
+            <label for="upload" class="upload-card">
+                <div class="upload-icon-circle">
+                    <span class="upload-icon">📸</span>
+                </div>
+                <p>Choose or Drag Photo</p>
+                <span>Supports JPG, PNG, WEBP, HEIC & all formats</span>
+            </label>
+            <input type="file" id="upload" accept="image/*, .png, .jpg, .jpeg, .webp, .heic, .bmp, .gif, .tiff, .svg, .avif">
+        </div>
     </div>
 
-    <!-- Step 2: Crop Photo (Full Screen Fit Mode) -->
+    <!-- Step 2: Crop Photo -->
     <div id="step-2" class="step-section hidden">
         <div class="img-container">
             <img id="crop-image" src="" alt="Crop Area">
         </div>
         <div class="controls-row">
-            <label style="font-size: 0.8rem;">Ratio: </label>
+            <label style="font-size: 0.9rem;">Size / Ratio: </label>
             <select id="size-preset">
-                <option value="free" selected>Free Crop</option>
+                <option value="3.5/4.5" selected>Standard Passport (3.5 x 4.5 cm)</option>
+                <option value="manual">Manual Crop</option>
+                <option value="joint">Joint Photo (4 x 6 Ratio)</option>
                 <option value="nocrop">No Crop (Direct Process)</option>
-                <option value="3.5/4.5">Standard Passport (3.5 x 4.5 cm)</option>
-                <option value="2/2">US Visa / Square (2 x 2 inch)</option>
             </select>
             <button onclick="cropAndRemoveBg()">Process & Remove BG</button>
-            <button onclick="fullReset()" style="background:#ff3333; color:#fff;">Change Photo</button>
+            <button onclick="fullReset()" style="background:#ff4444; color:#fff;">Change Photo</button>
         </div>
     </div>
 
     <!-- Loading Spinner Indicator -->
     <div id="loading" class="step-section hidden">
-        <div class="spinner"></div>
-        <div class="loading-text">[ Removing your background, please wait... ]</div>
+        <div class="spinner-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="loading-text">Processing background removal in HD...</div>
     </div>
 
     <!-- Step 3: Final Preview & Customization -->
     <div id="step-3" class="step-section hidden">
-        <canvas id="final-canvas"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="final-canvas"></canvas>
+        </div>
 
         <div class="controls-row">
-            <label style="font-size: 0.8rem;">BG Color: </label>
+            <label style="font-size: 0.9rem;">BG Color: </label>
             <input type="color" id="bg-color" value="#ffffff" onchange="renderFinalPhoto()">
             
             <div class="color-presets">
                 <button class="preset-btn" style="background:#ffffff;" onclick="setColor('#ffffff')"></button>
                 <button class="preset-btn" style="background:#0055ff;" onclick="setColor('#0055ff')"></button>
                 <button class="preset-btn" style="background:#00aaff;" onclick="setColor('#00aaff')"></button>
-                <button class="preset-btn" style="background:#00ff00;" onclick="setColor('#00ff00')"></button>
+                <button class="preset-btn" style="background:#00ff66;" onclick="setColor('#00ff66')"></button>
+                <button class="preset-btn" style="background:#e0e0e0;" onclick="setColor('#e0e0e0')"></button>
             </div>
 
-            <label style="font-size: 0.8rem;">Border: </label>
+            <label style="font-size: 0.9rem;">Border: </label>
             <select id="border-option" onchange="renderFinalPhoto()">
                 <option value="none">No Border</option>
                 <option value="thin">Thin Border</option>
                 <option value="thick">Thick Border</option>
             </select>
 
-            <label style="font-size: 0.8rem;">Format: </label>
+            <label style="font-size: 0.9rem;">Format: </label>
             <select id="download-format">
                 <option value="image/png">PNG (HD)</option>
                 <option value="image/jpeg">JPEG (HD)</option>
             </select>
         </div>
 
-        <div class="controls-row" style="margin-top: 4px;">
+        <div class="controls-row" style="margin-top: 6px;">
             <button onclick="downloadImage()">Download HD</button>
-            <button onclick="reCropCurrentPhoto()" style="background:#ffaa00; color:#0d0d0d;">Re-Crop Image</button>
-            <button onclick="reCropAfterBgRemoved()" style="background:#00ffff; color:#0d0d0d;">Crop BG-Removed Photo</button>
+            <button onclick="reCropCurrentPhoto()" style="background:#ffaa00; color:#080c08;">Re-Crop Image</button>
         </div>
     </div>
 </div>
 
 <script>
-    // HARDCODED API KEYS WITH FALLBACK
     const API_KEYS = [
-        "TL3eqdjYhAZcL1ZZH3qaescs", // Server 1 (Primary)
-        "is3ZKbYU9jNDVTFS1uru81RD"  // Server 2 (Fallback)
+        "TL3eqdjYhAZcL1ZZH3qaescs", 
+        "is3ZKbYU9jNDVTFS1uru81RD"
     ];
 
     let cropper = null;
@@ -369,8 +421,8 @@
     let rawImageSrc = null;
     let originalFileBlob = null;
 
-    // CREDIT TRACKER LOGIC
-    let creditsLeft = localStorage.getItem('total_credits') ? parseInt(localStorage.getItem('total_credits')) : 100;
+    // Credit Tracker (Default restored to 78/100)
+    let creditsLeft = localStorage.getItem('total_credits') !== null ? parseInt(localStorage.getItem('total_credits')) : 78;
     updateCreditUI();
 
     function toggleMenu(event) {
@@ -378,7 +430,6 @@
         document.getElementById('dropdown-menu').classList.toggle('hidden');
     }
 
-    // Auto Hide Menu when clicking outside anywhere
     document.addEventListener('click', function(event) {
         const menu = document.getElementById('dropdown-menu');
         const menuBtn = document.getElementById('menu-icon');
@@ -403,7 +454,6 @@
     const cropImgElement = document.getElementById('crop-image');
     const sizePreset = document.getElementById('size-preset');
 
-    // Step 1: Upload File Handler (Supports All Formats)
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -418,7 +468,6 @@
     });
 
     function openCropperScreen(imageSource) {
-        // Expand Container to Full Screen mode for Cropping
         document.getElementById('main-container').classList.add('expanded');
 
         cropImgElement.src = imageSource;
@@ -430,16 +479,17 @@
             cropper.destroy();
         }
 
-        sizePreset.value = 'free';
+        // Set to Passport size by default
+        sizePreset.value = '3.5/4.5';
 
-        // Cropper Configuration for Full Touch Zoom / Move / Drag
         cropper = new Cropper(cropImgElement, {
-            aspectRatio: NaN, // Free Crop by Default
-            viewMode: 0,      // Permits moving image unrestricted
-            dragMode: 'move', // Touch drag/move photo smoothly
-            touchDragZoom: true, // Pinch to zoom on Mobile
-            wheelZoom: true,     // Scroll wheel zoom on Desktop
-            autoCropArea: 0.8,
+            aspectRatio: 3.5 / 4.5, // Default Passport Ratio
+            viewMode: 1,
+            dragMode: 'move',
+            touchDragZoom: true,
+            wheelZoomRatio: 0.1,
+            responsive: true,
+            autoCropArea: 0.85,
             restore: false,
             guides: true,
             center: true,
@@ -447,18 +497,19 @@
             cropBoxMovable: true,
             cropBoxResizable: true,
             toggleDragModeOnDblclick: false,
-            background: false
+            background: false,
+            minContainerWidth: 280,
+            minContainerHeight: 280
         });
     }
 
-    // Handle Aspect Ratio Change
     sizePreset.addEventListener('change', function() {
         if (!cropper) return;
         if (this.value === '3.5/4.5') {
             cropper.setAspectRatio(3.5 / 4.5);
             cropper.crop();
-        } else if (this.value === '2/2') {
-            cropper.setAspectRatio(1);
+        } else if (this.value === 'joint') {
+            cropper.setAspectRatio(6 / 4); 
             cropper.crop();
         } else if (this.value === 'nocrop') {
             cropper.clear();
@@ -468,10 +519,9 @@
         }
     });
 
-    // Helper function to try API keys sequentially
     async function fetchRemoveBg(blob, keyIndex = 0) {
         if (keyIndex >= API_KEYS.length) {
-            throw new Error("Both API keys exhausted or invalid.");
+            throw new Error("API Keys exhausted.");
         }
 
         const formData = new FormData();
@@ -488,26 +538,26 @@
             });
 
             if (response.ok) {
-                deductCredit(); // Deduct Credit Automatically on Success
+                deductCredit();
                 return await response.blob();
             } else {
-                console.warn(`API Key ${keyIndex + 1} failed with status: ${response.status}. Trying fallback key...`);
                 return await fetchRemoveBg(blob, keyIndex + 1);
             }
         } catch (err) {
-            console.warn(`API Key ${keyIndex + 1} encountered an error. Trying fallback key...`);
             return await fetchRemoveBg(blob, keyIndex + 1);
         }
     }
 
-    // Process & Remove BG
     function cropAndRemoveBg() {
         if (sizePreset.value === 'nocrop') {
             if (!originalFileBlob) return;
             startBgRemoval(originalFileBlob);
         } else {
             if (!cropper) return;
-            const croppedCanvas = cropper.getCroppedCanvas();
+            const croppedCanvas = cropper.getCroppedCanvas({
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high'
+            });
             croppedCanvas.toBlob(function(blob) {
                 startBgRemoval(blob);
             }, 'image/png');
@@ -525,7 +575,7 @@
             renderFinalPhoto();
         } catch (err) {
             console.error(err);
-            alert("Error removing background! All API Key credits might be exhausted.");
+            alert("Error removing background! API Keys might be exhausted or network error.");
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
         }
@@ -536,7 +586,6 @@
         renderFinalPhoto();
     }
 
-    // Step 3: Draw Canvas in HD Quality
     function renderFinalPhoto() {
         if (!bgRemovedBlob) return;
 
@@ -549,8 +598,19 @@
         img.src = URL.createObjectURL(bgRemovedBlob);
 
         img.onload = () => {
-            canvas.width = 1400;
-            canvas.height = 1800;
+            if (sizePreset.value === 'joint') {
+                canvas.width = 3000;
+                canvas.height = 2000;
+            } else if (sizePreset.value === '3.5/4.5') {
+                canvas.width = 1400;
+                canvas.height = 1800;
+            } else {
+                canvas.width = 1800;
+                canvas.height = 2200;
+            }
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
 
             ctx.fillStyle = bgColor;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -559,52 +619,12 @@
 
             if (borderOption !== 'none') {
                 ctx.strokeStyle = '#000000';
-                ctx.lineWidth = borderOption === 'thick' ? 40 : 16;
+                ctx.lineWidth = borderOption === 'thick' ? Math.max(16, canvas.width / 40) : Math.max(6, canvas.width / 100);
                 ctx.strokeRect(0, 0, canvas.width, canvas.height);
             }
         };
     }
 
-    // Download HD Image
     function downloadImage() {
         const canvas = document.getElementById('final-canvas');
-        const format = document.getElementById('download-format').value;
-        const ext = format === 'image/jpeg' ? 'jpg' : 'png';
-
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL(format, 1.0);
-        link.download = `passport_photo_hd.${ext}`;
-        link.click();
-    }
-
-    // Re-Crop original photo
-    function reCropCurrentPhoto() {
-        openCropperScreen(rawImageSrc);
-    }
-
-    // Re-crop after Background Removal
-    function reCropAfterBgRemoved() {
-        if (!bgRemovedBlob) return;
-        const bgRemovedUrl = URL.createObjectURL(bgRemovedBlob);
-        openCropperScreen(bgRemovedUrl);
-    }
-
-    // Complete Reset (Back to Small Step 1 Container)
-    function fullReset() {
-        rawImageSrc = null;
-        bgRemovedBlob = null;
-        originalFileBlob = null;
-        
-        // Remove expanded class to revert to small container
-        document.getElementById('main-container').classList.remove('expanded');
-
-        document.getElementById('step-2').classList.add('hidden');
-        document.getElementById('step-3').classList.add('hidden');
-        document.getElementById('step-1').classList.remove('hidden');
-        fileInput.value = '';
-        if (cropper) cropper.destroy();
-    }
-</script>
-
-</body>
-</html>
+        const format = document.ge

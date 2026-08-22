@@ -42,9 +42,11 @@
         .container.expanded {
             width: 98vw;
             max-width: 900px;
-            height: 96dvh;
-            max-height: 96dvh;
-            padding: 10px;
+            height: 94dvh;
+            max-height: 94dvh;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
             justify-content: space-between;
         }
         
@@ -52,7 +54,7 @@
             position: absolute;
             top: 10px;
             right: 12px;
-            font-size: 22px;
+            font-size: 24px;
             cursor: pointer;
             color: #00ff66;
             user-select: none;
@@ -90,7 +92,7 @@
 
         h2 {
             font-size: 1.15rem;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-align: center;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -109,7 +111,7 @@
         }
 
         .container.expanded .step-section {
-            height: calc(100% - 32px);
+            height: calc(100% - 30px);
             justify-content: space-between;
         }
 
@@ -167,44 +169,44 @@
         }
 
         input, select {
-            margin: 2px;
-            padding: 6px 8px;
+            margin: 3px;
+            padding: 7px 10px;
             background: #141c14;
             color: #00ff66;
             border: 1px solid #00ff66;
-            border-radius: 5px;
-            font-size: 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
             outline: none;
         }
         
         button {
-            padding: 7px 12px;
+            padding: 8px 14px;
             background: #00ff66;
             color: #080c08;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.8rem;
-            margin: 2px;
-            border-radius: 5px;
+            font-size: 0.85rem;
+            margin: 3px;
+            border-radius: 6px;
             transition: 0.15s ease;
         }
         button:hover {
             background: #22ff77;
         }
 
+        /* Cropper container balanced with flex layout */
         .img-container {
             width: 100%;
             flex: 1;
             min-height: 0;
-            max-height: 66dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #040704;
             border-radius: 6px;
             border: 1px solid #00ff6644;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             overflow: hidden;
             position: relative;
         }
@@ -221,13 +223,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         canvas {
             border: 1px solid #00ff66;
             max-width: 100%;
-            max-height: 60dvh;
+            max-height: 65dvh;
             width: auto;
             height: auto;
             background-color: #141c14;
@@ -242,11 +244,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
         .preset-btn {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             border: 1px solid #00ff66;
             cursor: pointer;
@@ -290,14 +292,15 @@
             text-align: center;
         }
 
+        /* Middle-centered elevated controls */
         .controls-row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 5px;
             width: 100%;
-            padding: 2px 0;
+            padding: 4px 0 2px 0;
         }
     </style>
 </head>
@@ -333,7 +336,7 @@
             <img id="crop-image" alt="Crop Area">
         </div>
         <div class="controls-row">
-            <label style="font-size: 0.8rem;">Ratio: </label>
+            <label style="font-size: 0.85rem; font-weight: bold;">Ratio: </label>
             <select id="size-preset">
                 <option value="3.5/4.5" selected>Passport (3.5x4.5)</option>
                 <option value="manual">Manual Crop</option>
@@ -360,7 +363,7 @@
         </div>
 
         <div class="controls-row">
-            <label style="font-size: 0.8rem;">BG: </label>
+            <label style="font-size: 0.85rem;">BG: </label>
             <input type="color" id="bg-color" value="#ffffff" onchange="renderFinalPhoto()">
             
             <div class="color-presets">
@@ -371,7 +374,7 @@
                 <button class="preset-btn" style="background:#e0e0e0;" onclick="setColor('#e0e0e0')"></button>
             </div>
 
-            <label style="font-size: 0.8rem;">Border: </label>
+            <label style="font-size: 0.85rem;">Border: </label>
             <select id="border-option" onchange="renderFinalPhoto()">
                 <option value="none">None</option>
                 <option value="thin">Thin</option>
@@ -618,7 +621,7 @@
 
         const link = document.createElement('a');
         link.href = canvas.toDataURL(format, 1.0);
-        link.download = `photo_hd.${ext}`;
+        link.download = `passport_photo_hd.${ext}`;
         link.click();
     }
 

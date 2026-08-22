@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Remover</title>
+    <title>Background Remover & Photo Studio HD</title>
     <!-- Cropper.js for smooth cropping -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -235,7 +235,7 @@
         }
 
         canvas {
-            border: 1px solid #00ff66; /* Thin Border for Photo View */
+            border: 1px solid #00ff66;
             max-width: 100%;
             max-height: 65vh;
             width: auto;
@@ -339,7 +339,7 @@
                 <p>Choose or Drag Photo</p>
                 <span>Supports JPG, PNG, WEBP, HEIC & all formats</span>
             </label>
-            <input type="file" id="upload" accept="image/*, .png, .jpg, .jpeg, .webp, .heic, .bmp, .gif, .tiff, .svg, .avif">
+            <input type="file" id="upload" accept="image/*">
         </div>
     </div>
 
@@ -421,7 +421,6 @@
     let rawImageSrc = null;
     let originalFileBlob = null;
 
-    // Credit Tracker (Default restored to 78/100)
     let creditsLeft = localStorage.getItem('total_credits') !== null ? parseInt(localStorage.getItem('total_credits')) : 78;
     updateCreditUI();
 
@@ -454,6 +453,7 @@
     const cropImgElement = document.getElementById('crop-image');
     const sizePreset = document.getElementById('size-preset');
 
+    // Robust file selection handling
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -479,28 +479,28 @@
             cropper.destroy();
         }
 
-        // Set to Passport size by default
         sizePreset.value = '3.5/4.5';
 
-        cropper = new Cropper(cropImgElement, {
-            aspectRatio: 3.5 / 4.5, // Default Passport Ratio
-            viewMode: 1,
-            dragMode: 'move',
-            touchDragZoom: true,
-            wheelZoomRatio: 0.1,
-            responsive: true,
-            autoCropArea: 0.85,
-            restore: false,
-            guides: true,
-            center: true,
-            highlight: false,
-            cropBoxMovable: true,
-            cropBoxResizable: true,
-            toggleDragModeOnDblclick: false,
-            background: false,
-            minContainerWidth: 280,
-            minContainerHeight: 280
-        });
+        cropImgElement.onload = function() {
+            if (cropper) cropper.destroy();
+            cropper = new Cropper(cropImgElement, {
+                aspectRatio: 3.5 / 4.5,
+                viewMode: 1,
+                dragMode: 'move',
+                touchDragZoom: true,
+                wheelZoomRatio: 0.1,
+                responsive: true,
+                autoCropArea: 0.85,
+                restore: false,
+                guides: true,
+                center: true,
+                highlight: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                toggleDragModeOnDblclick: false,
+                background: false
+            });
+        };
     }
 
     sizePreset.addEventListener('change', function() {
@@ -627,4 +627,27 @@
 
     function downloadImage() {
         const canvas = document.getElementById('final-canvas');
-        const format = document.ge
+        const format = document.getElementById('download-format').value;
+        const ext = format === 'image/jpeg' ? 'jpg' : 'png';
+
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL(format, 1.0);
+        link.download = `passport_photo_hd.${ext}`;
+        link.click();
+    }
+
+    function reCropCurrentPhoto() {
+        openCropperScreen(rawImageSrc);
+    }
+
+    function fullReset() {
+        document.getElementById('main-container').classList.remove('expanded');
+        document.getElementById('step-2').classList.add('hidden');
+        document.getElementById('step-3').classList.add('hidden');
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('step-1').classList.remove('hidden');
+        fileInput.value = '';
+    }
+</script>
+</body>
+</html>

@@ -195,7 +195,6 @@
             background: #22ff77;
         }
 
-        /* Cropper container balanced with flex layout */
         .img-container {
             width: 100%;
             flex: 1;
@@ -281,7 +280,7 @@
         .dot:nth-child(3) { animation-delay: 0s; }
 
         @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            0%, 80%, 100% { transform: scale(0); opacity: 1.0; }
             40% { transform: scale(1.0); opacity: 1; }
         }
 
@@ -292,7 +291,6 @@
             text-align: center;
         }
 
-        /* Middle-centered elevated controls */
         .controls-row {
             display: flex;
             flex-wrap: wrap;
@@ -312,7 +310,7 @@
     <div id="dropdown-menu" class="dropdown-menu hidden">
         <div class="credit-info">
             Total Credits Left:
-            <span id="credit-display" class="credit-count">78 / 100</span>
+            <span id="credit-display" class="credit-count">50 / 50</span>
         </div>
     </div>
 
@@ -343,7 +341,7 @@
                 <option value="joint">Joint Photo (4x6)</option>
                 <option value="nocrop">No Crop</option>
             </select>
-            <button onclick="cropAndRemoveBg()">Remove BG</button>
+            <button id="btn-remove-bg" onclick="cropAndRemoveBg()">Remove BG</button>
             <button onclick="fullReset()" style="background:#ff4444; color:#fff;">Change</button>
         </div>
     </div>
@@ -395,17 +393,17 @@
 </div>
 
 <script>
-    const API_KEYS = [
-        "TL3eqdjYhAZcL1ZZH3qaescs", 
-        "is3ZKbYU9jNDVTFS1uru81RD"
-    ];
+    const API_KEY = "bTfAyyXJcQ6H4RkMk7S9SPgA";
 
     let cropper = null;
     let bgRemovedBlob = null;
     let rawImageSrc = null;
     let originalFileBlob = null;
+    let isProcessing = false;
 
-    let creditsLeft = localStorage.getItem('total_credits') !== null ? parseInt(localStorage.getItem('total_credits')) : 78;
+    // Resetting logic to clean version 2 starting from 50
+    localStorage.removeItem('total_credits'); // cleans old storage key
+    let creditsLeft = localStorage.getItem('total_credits_v2') !== null ? parseInt(localStorage.getItem('total_credits_v2')) : 50;
     updateCreditUI();
 
     function toggleMenu(event) {
@@ -422,13 +420,13 @@
     });
 
     function updateCreditUI() {
-        document.getElementById('credit-display').innerText = `${creditsLeft} / 100`;
+        document.getElementById('credit-display').innerText = `${creditsLeft} / 50`;
     }
 
     function deductCredit() {
         if (creditsLeft > 0) {
             creditsLeft--;
-            localStorage.setItem('total_credits', creditsLeft);
+            localStorage.setItem('total_credits_v2', creditsLeft);
             updateCreditUI();
         }
     }
@@ -508,36 +506,31 @@
         }
     });
 
-    async function fetchRemoveBg(blob, keyIndex = 0) {
-        if (keyIndex >= API_KEYS.length) {
-            throw new Error("API Keys exhausted.");
-        }
-
+    async function fetchRemoveBg(blob) {
         const formData = new FormData();
         formData.append('image_file', blob, 'photo.png');
         formData.append('size', 'auto');
 
-        try {
-            const response = await fetch('https://api.remove.bg/v1.0/removebg', {
-                method: 'POST',
-                headers: {
-                    'X-Api-Key': API_KEYS[keyIndex]
-                },
-                body: formData
-            });
+        const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+            method: 'POST',
+            headers: {
+                'X-Api-Key': API_KEY
+            },
+            body: formData
+        });
 
-            if (response.ok) {
-                deductCredit();
-                return await response.blob();
-            } else {
-                return await fetchRemoveBg(blob, keyIndex + 1);
-            }
-        } catch (err) {
-            return await fetchRemoveBg(blob, keyIndex + 1);
+        if (response.ok) {
+            deductCredit();
+            return await response.blob();
+        } else {
+            const errData = await response.text();
+            throw new Error(`Server returned status ${response.status}: ${errData}`);
         }
     }
 
     function cropAndRemoveBg() {
+        if (isProcessing) return;
+
         if (sizePreset.value === 'nocrop') {
             if (!originalFileBlob) return;
             startBgRemoval(originalFileBlob);
@@ -554,6 +547,7 @@
     }
 
     async function startBgRemoval(blob) {
+        isProcessing = true;
         document.getElementById('step-2').classList.add('hidden');
         document.getElementById('loading').classList.remove('hidden');
 
@@ -563,10 +557,12 @@
             document.getElementById('step-3').classList.remove('hidden');
             renderFinalPhoto();
         } catch (err) {
-            console.error(err);
-            alert("Error removing background! API Keys exhausted or network error.");
+            console.error("API Error:", err);
+            alert("Error: Background remove failed. Please check internet connection or API credits.");
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
+        } finally {
+            isProcessing = false;
         }
     }
 
@@ -617,26 +613,26 @@
     function downloadImage() {
         const canvas = document.getElementById('final-canvas');
         const format = document.getElementById('download-format').value;
-        const ext = format === 'image/jpeg' ? 'jpg' : 'png';
-
         const link = document.createElement('a');
+        link.download = `passport-photo-${Date.now()}.${format === 'image/png' ? 'png' : 'jpg'}`;
         link.href = canvas.toDataURL(format, 1.0);
-        link.download = `passport_photo_hd.${ext}`;
         link.click();
     }
 
     function reCropCurrentPhoto() {
-        openCropperScreen(rawImageSrc);
+        if (rawImageSrc) {
+            openCropperScreen(rawImageSrc);
+        }
     }
 
     function fullReset() {
-        document.getElementById('main-container').classList.remove('expanded');
-        document.getElementById('step-2').classList.add('hidden');
-        document.getElementById('step-3').classList.add('hidden');
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('step-1').classList.remove('hidden');
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
         fileInput.value = '';
-    }
-</script>
-</body>
-</html>
+        bgRemovedBlob = null;
+        rawImageSrc = null;
+        originalFileBlob = null;
+        isProcessing = false;
+  
